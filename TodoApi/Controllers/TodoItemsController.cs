@@ -43,7 +43,7 @@ namespace TodoApi.Controllers
 
            
 
-            logger.LogDebug("getting by id......");
+            logger.LogDebug("getting by id......");//logger
             
             var todoItem = _idetails.GetByID(id);
                 if(todoItem != null)
@@ -61,6 +61,7 @@ namespace TodoApi.Controllers
 
          }
         [HttpPut]
+        //put
 
         public IActionResult Edit(TodoItem todoItem)
         {
