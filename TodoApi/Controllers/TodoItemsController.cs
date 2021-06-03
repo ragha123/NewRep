@@ -43,7 +43,7 @@ namespace TodoApi.Controllers
 
            
 
-            logger.LogDebug("getting by id......");//logger
+            logger.LogDebug("getting by id......");//logger activities
             
             var todoItem = _idetails.GetByID(id);
                 if(todoItem != null)
