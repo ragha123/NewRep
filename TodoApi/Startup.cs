@@ -26,31 +26,40 @@ namespace TodoApi
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.Configure<jsonproperty>(this.Configuration.GetSection("EmployeeSettings:Header"));
 
             services.AddDbContext<TodoContext>(opt =>
                                                opt.UseInMemoryDatabase("TodoList"));
-            
+            services.AddControllers();
             services.AddTransient<Idetails, Detailsmodifications>();
             services.AddSwaggerGen();
-            services.AddSwaggerGen(config =>
+            services.AddSwaggerGen(c =>
             {
-                var titleBase = "Todo Management";
-                var description = "This is a web API for maintaining Todolist";
-                config.SwaggerDoc("v1", new OpenApiInfo
+                c.SwaggerDoc("v1", new OpenApiInfo
                 {
                     Version = "v1",
-                    Title = titleBase + " v1",
-                    Description = description,
+                    Title = "ToDo API",
+                    Description = "A simple example ASP.NET Core Web API",
+                    TermsOfService = new Uri("https://example.com/terms"),
+                    Contact = new OpenApiContact
+                    {
+                        Name = "Shayne Boyer",
+                        Email = string.Empty,
+                        Url = new Uri("https://twitter.com/spboyer"),
+                    },
+                    License = new OpenApiLicense
+                    {
+                        Name = "Use under LICX",
+                        Url = new Uri("https://example.com/license"),
+                    }
                 });
-                
+
             });
+            services.Configure<jsonproperty>(this.Configuration.GetSection("EmployeeSettings:Header"));
+           
             services.AddControllers();
             
-        
-    }
 
-
+        }
 
 
         public void Configure(IApplicationBuilder app, IWebHostEnvironment env)
@@ -68,14 +77,16 @@ namespace TodoApi
             app.UseSwaggerUI(c =>
             {
                 c.SwaggerEndpoint("/swagger/v1/swagger.json", "API V1");
-                
+                c.RoutePrefix = string.Empty;
+
             });
 
-            app.UseHttpsRedirection();
 
+
+            app.UseHttpsRedirection();
             app.UseRouting();
 
-            app.UseAuthentication();
+            
 
             app.UseAuthorization();
 
