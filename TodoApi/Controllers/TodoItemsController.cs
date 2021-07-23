@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
@@ -32,21 +33,34 @@ namespace TodoApi.Controllers
             this.logger = logger;
         }
 
-        
-        
+        [Route("Json")]
+        public ActionResult<IEnumerable<jsonproperty>> GetSettings()
+        {
 
-        // GET: Todo
+            return Content(JsonConvert.SerializeObject(jsonprop));
+        }
+       
+        [HttpGet]
+        public ActionResult<IEnumerable<TodoItem>> GetEmployees()
+        {
+            logger.LogInformation("Getting all the Employee");
+            return _idetails.GetAll();
+        }
+
+
+       // GET: Todo
         // Items/Details/5
+        
         [HttpGet("{id}")]
         public ActionResult<TodoItem> Details(int id)
         {
 
-           
 
-            logger.LogDebug("getting by id......");
-            
+
+            logger.LogDebug("getting by id......");//logger activities
+
             var todoItem = _idetails.GetByID(id);
-                if(todoItem != null)
+            if (todoItem != null)
             {
                 return Ok(todoItem);
             }
@@ -55,12 +69,14 @@ namespace TodoApi.Controllers
                 logger.LogWarning($"{id} not found ");
                 logger.LogWarning("this is a error");
                 return NotFound();
-                
-            }
-         return Ok(todoItem);
 
-         }
+            }
+
+
+        }
+
         [HttpPut]
+        //put
 
         public IActionResult Edit(TodoItem todoItem)
         {
@@ -73,6 +89,7 @@ namespace TodoApi.Controllers
 
 
         }
+        
         [HttpPost]
         
         public ActionResult<TodoItem> Create(TodoItem todoItem)
@@ -83,6 +100,7 @@ namespace TodoApi.Controllers
             return Json(new {message = "inserted  Successfully" });
 
         }
+        
 
         [HttpDelete("{id}")]
 
@@ -101,16 +119,11 @@ namespace TodoApi.Controllers
             {
                 return NotFound();
             }
-            return Json(new {message = "deleted  Successfully" });
+            
         }
 
-        [HttpGet]
-
-        public ActionResult<IEnumerable<jsonproperty>> Details()
-        {
-
-            return Content(JsonConvert.SerializeObject(jsonprop));
-        }
+        
+       
 
 
 
